@@ -1,15 +1,15 @@
 module testAddRecFN(
-    input wire [31:0] inputA, // первый операнд float32 по стандарту IEEE 754
-    input wire [31:0] inputB, // второй операнд float32 по стандарту IEEE 754
-    output wire [31:0] outputSum // сумма: inputA + inputB
+    input wire [31:0] inputA, // 
+    input wire [31:0] inputB, // 
+    output wire [31:0] outputSum // 
 );
     wire [32:0] recodedA, recodedB, recodedSum;
 
-    // Конвертация из стандартного формата IEEE в перекодированный
+    // Convert inputs to recoded format using fNToRecFN module
     fNToRecFN#(8, 24) convertA(inputA, recodedA);
     fNToRecFN#(8, 24) convertB(inputB, recodedB);
 
-    // Сложение в перекодированном формате
+    // Perform addition in recoded format using addRecFN module
     addRecFN#(8, 24) adder(
         .control(0), 
         .subOp(0), 
@@ -20,6 +20,6 @@ module testAddRecFN(
         .exceptionFlags()
     );
 
-    // Конвертация результата обратно в стандартный формат IEEE
+    // Convert the sum from recoded format to normal floating-point IEEE using recFNToFN module
     recFNToFN#(8, 24) convertSum(recodedSum, outputSum);
 endmodule
